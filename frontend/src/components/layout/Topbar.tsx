@@ -35,20 +35,20 @@ export const Topbar: React.FC<TopbarProps> = ({
 
   // Operational state badge text & color
   let modeBadge = 'LIVE';
-  let modeBadgeBg = 'var(--success-soft)';
-  let modeBadgeBorder = 'var(--success-border)';
-  let modeBadgeColor = 'var(--success)';
+  let modeBadgeBg = '#F0FDF4';
+  let modeBadgeBorder = '#BBF7D0';
+  let modeBadgeColor = '#16A34A';
 
   if (simState === 'DEMO_RUNNING' || simState === 'RUNNING') {
     modeBadge = 'REPLAY';
-    modeBadgeBg = 'rgba(99, 102, 241, 0.14)';
-    modeBadgeBorder = 'rgba(99, 102, 241, 0.40)';
-    modeBadgeColor = '#818cf8';
+    modeBadgeBg = '#EEF2FF';
+    modeBadgeBorder = '#C7D2FE';
+    modeBadgeColor = '#4338CA';
   } else if (simState === 'DEMO_PAUSED' || simState === 'PAUSED') {
     modeBadge = 'PAUSED';
-    modeBadgeBg = 'var(--warning-soft)';
-    modeBadgeBorder = 'var(--warning-border)';
-    modeBadgeColor = 'var(--warning)';
+    modeBadgeBg = '#FFFBEB';
+    modeBadgeBorder = '#FEF3C7';
+    modeBadgeColor = '#D97706';
   }
 
   const throughput = metrics ? `${metrics.current_traffic_rate_mbps.toFixed(2)} Mbps` : '3.80 Mbps';
@@ -68,12 +68,12 @@ export const Topbar: React.FC<TopbarProps> = ({
               gap: 5,
               padding: '2px 8px',
               borderRadius: 4,
-              fontSize: 10,
-              fontWeight: 800,
+              fontSize: 10.5,
+              fontWeight: 700,
               background: modeBadgeBg,
               border: `1px solid ${modeBadgeBorder}`,
               color: modeBadgeColor,
-              letterSpacing: '0.06em',
+              letterSpacing: '0.04em',
             }}>
               <span className={`connection-dot ${connected ? 'connected' : 'disconnected'}`} />
               {connected ? modeBadge : 'DISCONNECTED'}
@@ -84,22 +84,22 @@ export const Topbar: React.FC<TopbarProps> = ({
       </div>
 
       {/* Center/Right: Live SOC Telemetry & Search */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
         {/* Passive Monitoring Badge */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
           gap: 6,
           padding: '4px 10px',
-          background: 'rgba(16, 185, 129, 0.08)',
-          border: '1px solid rgba(16, 185, 129, 0.25)',
+          background: '#F0FDF4',
+          border: '1px solid #BBF7D0',
           borderRadius: 'var(--radius-sm)',
           fontSize: 11,
-          fontWeight: 700,
-          color: '#34d399',
-          letterSpacing: '0.04em',
+          fontWeight: 650,
+          color: '#16A34A',
+          letterSpacing: '0.03em',
         }}>
-          <ShieldCheck size={14} />
+          <ShieldCheck size={14} color="#16A34A" />
           <span>PASSIVE MONITORING</span>
         </div>
 
@@ -118,7 +118,7 @@ export const Topbar: React.FC<TopbarProps> = ({
         {/* Active Alerts */}
         <div className="topbar-telemetry-item">
           <span className="topbar-telemetry-label">Alerts</span>
-          <span className="topbar-telemetry-value" style={{ color: alerts.length > 0 ? '#f87171' : 'var(--text-primary)' }}>
+          <span className="topbar-telemetry-value" style={{ color: alerts.length > 0 ? '#DC2626' : 'var(--text-primary)' }}>
             {alerts.length}
           </span>
         </div>
@@ -126,7 +126,7 @@ export const Topbar: React.FC<TopbarProps> = ({
         {/* Latency */}
         <div className="topbar-telemetry-item">
           <span className="topbar-telemetry-label">p50 Latency</span>
-          <span className="topbar-telemetry-value" style={{ color: '#34d399' }}>{p50Latency}</span>
+          <span className="topbar-telemetry-value" style={{ color: '#16A34A' }}>{p50Latency}</span>
         </div>
 
         {/* Demo Phase Mini Badge */}
@@ -136,12 +136,12 @@ export const Topbar: React.FC<TopbarProps> = ({
             alignItems: 'center',
             gap: 6,
             padding: '4px 10px',
-            background: 'var(--primary-soft)',
-            border: '1px solid var(--primary-border)',
+            background: '#EEF2FF',
+            border: '1px solid #C7D2FE',
             borderRadius: 'var(--radius-sm)',
             fontSize: 11,
-            fontWeight: 700,
-            color: '#a5b4fc',
+            fontWeight: 650,
+            color: '#4338CA',
           }}>
             <span>Phase {(phase.phase_index || 0) + 1}/{phase.total_phases}</span>
           </div>

@@ -319,10 +319,10 @@ function Dashboard() {
         {/* ─── Page Context Header & Controls ────────────────────────────── */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 16, marginBottom: 16, flexWrap: 'wrap', gap: 12 }}>
           <div>
-            <h1 style={{ fontSize: 20, fontWeight: 700, color: '#f8fafc', margin: 0, letterSpacing: '-0.02em' }}>
+            <h1 style={{ fontSize: 22, fontWeight: 600, color: '#0F172A', margin: 0, letterSpacing: '-0.02em' }}>
               Security Overview
             </h1>
-            <p style={{ fontSize: 12.5, color: 'var(--text-secondary)', margin: '3px 0 0 0' }}>
+            <p style={{ fontSize: 13, color: 'var(--text-secondary)', margin: '3px 0 0 0' }}>
               Real-time unidirectional flow analysis, anomaly scoring, and MITRE ATT&CK categorization.
             </p>
           </div>
@@ -382,7 +382,7 @@ function Dashboard() {
                 Test Scenarios (Unidirectional Ingest):
               </span>
               <span style={{ fontSize: 11, color: 'var(--text-muted)', marginLeft: 'auto' }}>
-                Active: <b style={{ color: '#4f46e5' }}>{activeScenarioId}</b>
+                Active: <b style={{ color: '#4F46E5' }}>{activeScenarioId}</b>
               </span>
             </div>
 
@@ -431,25 +431,25 @@ function Dashboard() {
           <div className="kpi-card-huwise">
             <div className="kpi-header">
               <span>Threats detected</span>
-              <AlertTriangle size={15} color={alerts.length > 0 ? '#ef4444' : '#64748b'} />
+              <AlertTriangle size={15} color={alerts.length > 0 ? '#EF4444' : '#94A3B8'} />
             </div>
-            <div className="kpi-main-val" style={{ color: alerts.length > 0 ? '#f87171' : '#f8fafc' }}>
+            <div className="kpi-main-val" style={{ color: alerts.length > 0 ? '#DC2626' : '#0F172A' }}>
               {alerts.length}
             </div>
             <div className="kpi-footer-sub">
               {alerts.length > 0 ? (
                 <>
-                  <span style={{ color: '#ef4444', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 2 }}>
+                  <span style={{ color: '#DC2626', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 2 }}>
                     <ArrowUpRight size={13} /> +{alerts.length} vs baseline
                   </span>
                   <span>·</span>
-                  <span style={{ color: '#f87171' }}>{severityCounts.CRITICAL} Critical</span>
+                  <span style={{ color: '#DC2626', fontWeight: 600 }}>{severityCounts.CRITICAL} Critical</span>
                   <span>·</span>
-                  <span style={{ color: '#fb923c' }}>{severityCounts.HIGH} High</span>
+                  <span style={{ color: '#EA580C', fontWeight: 600 }}>{severityCounts.HIGH} High</span>
                 </>
               ) : (
-                <span style={{ color: '#10b981', display: 'flex', alignItems: 'center', gap: 4 }}>
-                  <CheckCircle2 size={13} /> Baseline Normal
+                <span style={{ color: '#16A34A', display: 'flex', alignItems: 'center', gap: 4, fontWeight: 500 }}>
+                  <CheckCircle2 size={13} color="#16A34A" /> Baseline Normal
                 </span>
               )}
             </div>
@@ -459,9 +459,9 @@ function Dashboard() {
           <div className="kpi-card-huwise">
             <div className="kpi-header">
               <span>Active flows</span>
-              <Activity size={15} color="#4f46e5" />
+              <Activity size={15} color="#4F46E5" />
             </div>
-            <div className="kpi-main-val">
+            <div className="kpi-main-val" style={{ color: '#0F172A' }}>
               {metrics ? formatNumber(metrics.active_flows) : '500'}
             </div>
             <div className="kpi-footer-sub">
@@ -477,9 +477,9 @@ function Dashboard() {
           <div className="kpi-card-huwise">
             <div className="kpi-header">
               <span>Traffic volume</span>
-              <Network size={15} color="#0284c7" />
+              <Network size={15} color="#0284C7" />
             </div>
-            <div className="kpi-main-val">
+            <div className="kpi-main-val" style={{ color: '#0F172A' }}>
               {metrics ? `${metrics.current_traffic_rate_mbps.toFixed(1)} Mbps` : '211.9 Mbps'}
             </div>
             <div className="kpi-footer-sub">
@@ -487,7 +487,7 @@ function Dashboard() {
                 {metrics ? formatRate(metrics.events_per_sec) : '156.7/s'}
               </span>
               <span>·</span>
-              <span style={{ color: '#10b981' }}>0 Drops (Line-Rate)</span>
+              <span style={{ color: '#16A34A', fontWeight: 500 }}>0 Drops (Line-Rate)</span>
             </div>
           </div>
 
@@ -526,14 +526,14 @@ function Dashboard() {
           <div className="kpi-card-huwise">
             <div className="kpi-header">
               <span>System health</span>
-              <Cpu size={15} color="#10b981" />
+              <Cpu size={15} color="#16A34A" />
             </div>
-            <div className="kpi-main-val" style={{ color: '#10b981' }}>
+            <div className="kpi-main-val" style={{ color: '#16A34A' }}>
               99.98%
             </div>
             <div className="kpi-footer-sub">
               <span style={{ color: 'var(--text-muted)' }}>Median latency:</span>
-              <span style={{ fontFamily: 'var(--font-mono)', color: '#34d399', fontWeight: 600 }}>
+              <span style={{ fontFamily: 'var(--font-mono)', color: '#16A34A', fontWeight: 600 }}>
                 {metrics ? formatLatency(metrics.latency_p50_ms || metrics.detection_latency_ms) : '40 μs'}
               </span>
             </div>
@@ -549,7 +549,7 @@ function Dashboard() {
               <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
                 <span className="card-title">Network Activity</span>
                 {/* Metric Series Toggles */}
-                <div style={{ display: 'flex', background: 'rgba(255, 255, 255, 0.04)', padding: 2, borderRadius: 4 }}>
+                <div style={{ display: 'flex', background: '#F1F5F9', padding: 2, borderRadius: 4 }}>
                   <button
                     className={`time-range-btn ${primaryMetricMode === 'mbps' ? 'active' : ''}`}
                     onClick={() => setPrimaryMetricMode('mbps')}
@@ -573,7 +573,7 @@ function Dashboard() {
 
               <div className="card-header-actions">
                 <span style={{ fontSize: 11.5, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
-                  Peak: <b style={{ color: '#f8fafc' }}>{peakThroughput}</b>
+                  Peak: <b style={{ color: '#0F172A' }}>{peakThroughput}</b>
                 </span>
                 <button
                   className="icon-btn-ghost"
@@ -586,47 +586,55 @@ function Dashboard() {
             </div>
 
             <div style={{ padding: '16px 20px 20px 20px', height: 250 }}>
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={timelineChartData} margin={{ top: 8, right: 10, left: -20, bottom: 0 }}>
-                  <defs>
-                    <linearGradient id="huwiseAreaGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#4f46e5" stopOpacity={0.20} />
-                      <stop offset="95%" stopColor="#4f46e5" stopOpacity={0.01} />
-                    </linearGradient>
-                  </defs>
-                  <XAxis
-                    dataKey="time"
-                    tick={{ fontSize: 10.5, fill: '#64748b' }}
-                    stroke="#1e293b"
-                    axisLine={{ stroke: '#1e293b' }}
-                    tickLine={false}
-                  />
-                  <YAxis
-                    tick={{ fontSize: 10.5, fill: '#64748b' }}
-                    stroke="#1e293b"
-                    axisLine={false}
-                    tickLine={false}
-                  />
-                  <Tooltip
-                    contentStyle={{
-                      background: '#0f172a',
-                      border: '1px solid #334155',
-                      borderRadius: 6,
-                      fontSize: 12,
-                      boxShadow: '0 4px 16px rgba(0,0,0,0.5)',
-                      color: '#f8fafc',
-                    }}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey={primaryMetricMode}
-                    stroke="#4f46e5"
-                    fill="url(#huwiseAreaGrad)"
-                    strokeWidth={2}
-                    name={primaryMetricMode === 'mbps' ? 'Throughput (Mbps)' : primaryMetricMode === 'events' ? 'Events/sec' : 'Active Flows'}
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
+              {timelineChartData.length === 0 ? (
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', color: 'var(--text-secondary)' }}>
+                  <Activity size={24} color="#94A3B8" style={{ marginBottom: 6 }} />
+                  <span style={{ fontSize: 13, fontWeight: 600, color: '#0F172A' }}>No traffic data available</span>
+                  <span style={{ fontSize: 11.5, color: '#94A3B8' }}>Waiting for telemetry stream...</span>
+                </div>
+              ) : (
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={timelineChartData} margin={{ top: 8, right: 10, left: -20, bottom: 0 }}>
+                    <defs>
+                      <linearGradient id="huwiseAreaGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#4F46E5" stopOpacity={0.16} />
+                        <stop offset="95%" stopColor="#4F46E5" stopOpacity={0.01} />
+                      </linearGradient>
+                    </defs>
+                    <XAxis
+                      dataKey="time"
+                      tick={{ fontSize: 10.5, fill: '#64748B' }}
+                      stroke="#CBD5E1"
+                      axisLine={{ stroke: '#E2E8F0' }}
+                      tickLine={false}
+                    />
+                    <YAxis
+                      tick={{ fontSize: 10.5, fill: '#64748B' }}
+                      stroke="#CBD5E1"
+                      axisLine={false}
+                      tickLine={false}
+                    />
+                    <Tooltip
+                      contentStyle={{
+                        background: '#FFFFFF',
+                        border: '1px solid #E2E8F0',
+                        borderRadius: 6,
+                        fontSize: 12,
+                        boxShadow: '0 4px 14px rgba(0,0,0,0.08)',
+                        color: '#0F172A',
+                      }}
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey={primaryMetricMode}
+                      stroke="#4F46E5"
+                      fill="url(#huwiseAreaGrad)"
+                      strokeWidth={2}
+                      name={primaryMetricMode === 'mbps' ? 'Throughput (Mbps)' : primaryMetricMode === 'events' ? 'Events/sec' : 'Active Flows'}
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              )}
             </div>
           </div>
 
@@ -648,18 +656,19 @@ function Dashboard() {
             <div style={{ padding: '16px 20px 20px 20px', height: 250 }}>
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={threatSurgeData} margin={{ top: 8, right: 10, left: -25, bottom: 0 }}>
-                  <XAxis dataKey="time" tick={false} stroke="#1e293b" axisLine={{ stroke: '#1e293b' }} />
-                  <YAxis tick={{ fontSize: 10.5, fill: '#64748b' }} stroke="#1e293b" axisLine={false} tickLine={false} />
+                  <XAxis dataKey="time" tick={false} stroke="#CBD5E1" axisLine={{ stroke: '#E2E8F0' }} />
+                  <YAxis tick={{ fontSize: 10.5, fill: '#64748B' }} stroke="#CBD5E1" axisLine={false} tickLine={false} />
                   <Tooltip
                     contentStyle={{
-                      background: '#0f172a',
-                      border: '1px solid #334155',
+                      background: '#FFFFFF',
+                      border: '1px solid #E2E8F0',
                       borderRadius: 6,
                       fontSize: 11.5,
-                      color: '#f8fafc',
+                      boxShadow: '0 4px 14px rgba(0,0,0,0.08)',
+                      color: '#0F172A',
                     }}
                   />
-                  <Bar dataKey="threats" fill="#ef4444" radius={[2, 2, 0, 0]} name="Anomalous Flows" />
+                  <Bar dataKey="threats" fill="#EF4444" radius={[2, 2, 0, 0]} name="Anomalous Flows" />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -695,7 +704,7 @@ function Dashboard() {
                       <span style={{ width: 8, height: 8, borderRadius: 2, background: p.color }} />
                       <span style={{ color: 'var(--text-secondary)' }}>{p.name}</span>
                     </div>
-                    <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 650, color: '#f8fafc' }}>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 650, color: '#0F172A' }}>
                       {p.pct}%
                     </span>
                   </div>
@@ -732,11 +741,12 @@ function Dashboard() {
                         </Pie>
                         <Tooltip
                           contentStyle={{
-                            background: '#0f172a',
-                            border: '1px solid #334155',
+                            background: '#FFFFFF',
+                            border: '1px solid #E2E8F0',
                             borderRadius: 6,
-                            fontSize: 11,
-                            color: '#f8fafc',
+                            fontSize: 11.5,
+                            boxShadow: '0 4px 14px rgba(0,0,0,0.08)',
+                            color: '#0F172A',
                           }}
                         />
                       </PieChart>
@@ -748,9 +758,9 @@ function Dashboard() {
                       <div key={item.rawKey} className="donut-legend-item">
                         <div className="donut-legend-left">
                           <span className="donut-swatch" style={{ background: item.color }} />
-                          <span style={{ color: 'var(--text-secondary)', fontSize: 11 }}>{item.name}</span>
+                          <span style={{ color: 'var(--text-secondary)', fontSize: 11.5 }}>{item.name}</span>
                         </div>
-                        <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, fontSize: 11 }}>
+                        <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, fontSize: 11.5, color: '#0F172A' }}>
                           {item.value} ({item.percentage}%)
                         </span>
                       </div>
@@ -759,7 +769,7 @@ function Dashboard() {
                 </div>
               ) : (
                 <EmptyState
-                  icon={<CheckCircle2 size={22} color="#10b981" />}
+                  icon={<CheckCircle2 size={22} color="#16A34A" />}
                   title="No Threats Classified"
                   description="Clean baseline network traffic."
                 />
@@ -849,7 +859,7 @@ function Dashboard() {
                   <tr>
                     <td colSpan={8}>
                       <EmptyState
-                        icon={<CheckCircle2 size={28} color="#10b981" />}
+                        icon={<CheckCircle2 size={26} color="#16A34A" />}
                         title="No Security Events Found"
                         description="Passive monitoring active with zero alerts matching the current filter criteria."
                       />
@@ -862,7 +872,7 @@ function Dashboard() {
                       className={alert.severity === 'CRITICAL' ? 'malicious' : alert.severity === 'HIGH' ? 'suspicious' : ''}
                       onClick={() => setSelectedAlert(alert)}
                     >
-                      <td style={{ color: 'var(--text-muted)' }}>
+                      <td style={{ color: 'var(--text-secondary)' }}>
                         {formatTimestamp(alert.timestamp)}
                       </td>
                       <td>
@@ -877,25 +887,25 @@ function Dashboard() {
                         </div>
                       </td>
                       <td>
-                        <span style={{ color: '#f8fafc' }}>{alert.src_ip}</span>
-                        <span style={{ color: 'var(--text-muted)', fontSize: 11 }}>:{alert.src_port}</span>
+                        <span style={{ color: '#0F172A', fontWeight: 600 }}>{alert.src_ip}</span>
+                        <span style={{ color: 'var(--text-muted)', fontSize: 11.5 }}>:{alert.src_port}</span>
                       </td>
                       <td>
-                        <span style={{ color: '#f8fafc' }}>{alert.dst_ip}</span>
-                        <span style={{ color: 'var(--text-muted)', fontSize: 11 }}>:{alert.dst_port}</span>
+                        <span style={{ color: '#0F172A', fontWeight: 600 }}>{alert.dst_ip}</span>
+                        <span style={{ color: 'var(--text-muted)', fontSize: 11.5 }}>:{alert.dst_port}</span>
                       </td>
                       <td>
                         <span style={{ color: 'var(--text-secondary)', fontWeight: 550 }}>{alert.protocol}</span>
                       </td>
                       <td>
-                        <span style={{ color: alert.confidence > 0.85 ? '#10b981' : '#f59e0b', fontWeight: 650 }}>
+                        <span style={{ color: alert.confidence > 0.85 ? '#16A34A' : '#D97706', fontWeight: 650 }}>
                           {formatConfidence(alert.confidence)}
                         </span>
                       </td>
                       <td style={{ textAlign: 'right' }}>
                         <button
                           className="btn btn-secondary"
-                          style={{ padding: '3px 9px', fontSize: 11 }}
+                          style={{ padding: '3px 9px', fontSize: 11.5 }}
                           onClick={(e) => {
                             e.stopPropagation();
                             setSelectedAlert(alert);
@@ -919,8 +929,8 @@ function Dashboard() {
           <div className="drilldown-modal" onClick={(e) => e.stopPropagation()}>
             <div className="drilldown-modal-header">
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <Maximize2 size={16} color="#4f46e5" />
-                <span style={{ fontSize: 14, fontWeight: 700, color: '#f8fafc' }}>
+                <Maximize2 size={16} color="#4F46E5" />
+                <span style={{ fontSize: 14.5, fontWeight: 700, color: '#0F172A' }}>
                   {expandedCard === 'timeline' && 'Network Activity Timeline (Deep Inspection)'}
                   {expandedCard === 'surge' && 'Threat Activity Distribution'}
                   {expandedCard === 'topology' && 'Ingress & Network Zone Topology Map'}
@@ -936,18 +946,19 @@ function Dashboard() {
                 <div style={{ height: 400 }}>
                   <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={timelineChartData}>
-                      <XAxis dataKey="time" stroke="#334155" />
-                      <YAxis stroke="#334155" />
+                      <XAxis dataKey="time" stroke="#CBD5E1" tick={{ fill: '#64748B', fontSize: 11 }} />
+                      <YAxis stroke="#CBD5E1" tick={{ fill: '#64748B', fontSize: 11 }} />
                       <Tooltip
                         contentStyle={{
-                          background: '#0f172a',
-                          border: '1px solid #334155',
+                          background: '#FFFFFF',
+                          border: '1px solid #E2E8F0',
                           borderRadius: 8,
-                          color: '#f8fafc',
+                          boxShadow: '0 4px 14px rgba(0,0,0,0.08)',
+                          color: '#0F172A',
                         }}
                       />
-                      <Area type="monotone" dataKey="mbps" stroke="#4f46e5" fill="#4f46e5" fillOpacity={0.15} name="Throughput (Mbps)" />
-                      <Area type="monotone" dataKey="events" stroke="#0284c7" fill="#0284c7" fillOpacity={0.10} name="Events/sec" />
+                      <Area type="monotone" dataKey="mbps" stroke="#4F46E5" fill="#4F46E5" fillOpacity={0.15} name="Throughput (Mbps)" />
+                      <Area type="monotone" dataKey="events" stroke="#0284C7" fill="#0284C7" fillOpacity={0.10} name="Events/sec" />
                     </AreaChart>
                   </ResponsiveContainer>
                 </div>
@@ -957,17 +968,18 @@ function Dashboard() {
                 <div style={{ height: 400 }}>
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={threatSurgeData}>
-                      <XAxis dataKey="time" stroke="#334155" />
-                      <YAxis stroke="#334155" />
+                      <XAxis dataKey="time" stroke="#CBD5E1" tick={false} />
+                      <YAxis stroke="#CBD5E1" tick={{ fill: '#64748B', fontSize: 11 }} />
                       <Tooltip
                         contentStyle={{
-                          background: '#0f172a',
-                          border: '1px solid #334155',
+                          background: '#FFFFFF',
+                          border: '1px solid #E2E8F0',
                           borderRadius: 8,
-                          color: '#f8fafc',
+                          boxShadow: '0 4px 14px rgba(0,0,0,0.08)',
+                          color: '#0F172A',
                         }}
                       />
-                      <Bar dataKey="threats" fill="#ef4444" radius={[3, 3, 0, 0]} name="Anomalies Detected" />
+                      <Bar dataKey="threats" fill="#EF4444" radius={[3, 3, 0, 0]} name="Anomalies Detected" />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>

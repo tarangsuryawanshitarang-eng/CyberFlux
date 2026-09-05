@@ -3,6 +3,7 @@
  * 
  * Non-disruptive deep inspection view displaying ATT&CK mapping,
  * flow identity, detection evidence, feature contributions, and pipeline telemetry.
+ * Clean light enterprise aesthetic.
  */
 
 import React from 'react';
@@ -48,22 +49,22 @@ export const AlertDrawer: React.FC<AlertDrawerProps> = ({ alert, onClose }) => {
               width: 34,
               height: 34,
               borderRadius: 8,
-              background: 'rgba(239, 68, 68, 0.15)',
-              border: '1px solid rgba(239, 68, 68, 0.35)',
+              background: '#FEF2F2',
+              border: '1px solid #FECACA',
               display: 'grid',
               placeItems: 'center',
-              color: 'var(--danger)',
+              color: '#DC2626',
             }}>
               <ShieldAlert size={18} />
             </div>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <span style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)' }}>
+                <span style={{ fontSize: 14.5, fontWeight: 700, color: '#0F172A' }}>
                   {THREAT_CLASS_LABELS[alert.threat_class] || alert.threat_class}
                 </span>
                 <SeverityBadge severity={alert.severity} />
               </div>
-              <div style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+              <div style={{ fontSize: 11, color: '#64748B', fontFamily: 'var(--font-mono)' }}>
                 ID: {alert.alert_id}
               </div>
             </div>
@@ -84,36 +85,36 @@ export const AlertDrawer: React.FC<AlertDrawerProps> = ({ alert, onClose }) => {
           {/* Top Summary Banner */}
           <div style={{
             padding: '12px 14px',
-            background: 'rgba(99, 102, 241, 0.08)',
-            border: '1px solid rgba(99, 102, 241, 0.25)',
+            background: '#EEF2FF',
+            border: '1px solid #C7D2FE',
             borderRadius: 'var(--radius-sm)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
           }}>
             <div>
-              <div style={{ fontSize: 10.5, textTransform: 'uppercase', color: 'var(--text-muted)', fontWeight: 700 }}>
+              <div style={{ fontSize: 10.5, textTransform: 'uppercase', color: '#4338CA', fontWeight: 650 }}>
                 AI Confidence Score
               </div>
-              <div style={{ fontSize: 18, fontWeight: 800, color: '#818cf8', fontFamily: 'var(--font-mono)' }}>
+              <div style={{ fontSize: 18, fontWeight: 800, color: '#312E81', fontFamily: 'var(--font-mono)' }}>
                 {formatConfidence(alert.confidence)}
               </div>
             </div>
 
             <div>
-              <div style={{ fontSize: 10.5, textTransform: 'uppercase', color: 'var(--text-muted)', fontWeight: 700 }}>
+              <div style={{ fontSize: 10.5, textTransform: 'uppercase', color: '#64748B', fontWeight: 650 }}>
                 Detection Latency
               </div>
-              <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }}>
+              <div style={{ fontSize: 14, fontWeight: 700, color: '#0F172A', fontFamily: 'var(--font-mono)' }}>
                 {formatLatency(alert.detection_latency_ms)}
               </div>
             </div>
 
             <div>
-              <div style={{ fontSize: 10.5, textTransform: 'uppercase', color: 'var(--text-muted)', fontWeight: 700 }}>
+              <div style={{ fontSize: 10.5, textTransform: 'uppercase', color: '#64748B', fontWeight: 650 }}>
                 Timestamp
               </div>
-              <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}>
+              <div style={{ fontSize: 12, fontWeight: 600, color: '#475569', fontFamily: 'var(--font-mono)' }}>
                 {formatTimestamp(alert.timestamp)}
               </div>
             </div>
@@ -122,21 +123,21 @@ export const AlertDrawer: React.FC<AlertDrawerProps> = ({ alert, onClose }) => {
           {/* MITRE ATT&CK Classification */}
           <div className="drawer-section">
             <div className="drawer-section-title">
-              <Terminal size={14} color="#8b5cf6" />
+              <Terminal size={14} color="#4F46E5" />
               MITRE ATT&CK Classification
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-              <div style={{ background: 'rgba(0,0,0,0.2)', padding: '8px 10px', borderRadius: 6 }}>
-                <span style={{ fontSize: 10, color: 'var(--text-muted)', textTransform: 'uppercase', display: 'block' }}>
+              <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', padding: '8px 10px', borderRadius: 6 }}>
+                <span style={{ fontSize: 10, color: '#64748B', textTransform: 'uppercase', display: 'block', fontWeight: 600 }}>
                   Tactic
                 </span>
-                <span style={{ fontSize: 12, fontWeight: 650, color: '#c4b5fd' }}>
+                <span style={{ fontSize: 12, fontWeight: 650, color: '#4338CA' }}>
                   {mitre.tactic}
                 </span>
               </div>
 
-              <div style={{ background: 'rgba(0,0,0,0.2)', padding: '8px 10px', borderRadius: 6 }}>
-                <span style={{ fontSize: 10, color: 'var(--text-muted)', textTransform: 'uppercase', display: 'block' }}>
+              <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', padding: '8px 10px', borderRadius: 6 }}>
+                <span style={{ fontSize: 10, color: '#64748B', textTransform: 'uppercase', display: 'block', fontWeight: 600 }}>
                   Technique
                 </span>
                 <span className="mitre-badge" style={{ marginTop: 2 }}>
@@ -149,7 +150,7 @@ export const AlertDrawer: React.FC<AlertDrawerProps> = ({ alert, onClose }) => {
           {/* Network Endpoint Identity */}
           <div className="drawer-section">
             <div className="drawer-section-title">
-              <Activity size={14} color="#38bdf8" />
+              <Activity size={14} color="#0284C7" />
               Network Flow Identity
             </div>
             <div style={{
@@ -157,42 +158,43 @@ export const AlertDrawer: React.FC<AlertDrawerProps> = ({ alert, onClose }) => {
               alignItems: 'center',
               justifyContent: 'space-between',
               padding: '10px 12px',
-              background: 'rgba(0,0,0,0.2)',
+              background: '#F8FAFC',
+              border: '1px solid #E2E8F0',
               borderRadius: 6,
               fontFamily: 'var(--font-mono)',
               fontSize: 12,
             }}>
               <div>
-                <span style={{ fontSize: 10, color: 'var(--text-muted)', display: 'block', textTransform: 'uppercase' }}>Source</span>
-                <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{alert.src_ip}</span>
-                <span style={{ color: 'var(--text-muted)' }}>:{alert.src_port}</span>
+                <span style={{ fontSize: 10, color: '#64748B', display: 'block', textTransform: 'uppercase', fontWeight: 600 }}>Source</span>
+                <span style={{ color: '#0F172A', fontWeight: 600 }}>{alert.src_ip}</span>
+                <span style={{ color: '#64748B' }}>:{alert.src_port}</span>
               </div>
 
-              <div style={{ color: 'var(--primary)', display: 'flex', alignItems: 'center', padding: '0 8px' }}>
+              <div style={{ color: '#4F46E5', display: 'flex', alignItems: 'center', padding: '0 8px' }}>
                 <ArrowRight size={16} />
               </div>
 
               <div style={{ textAlign: 'right' }}>
-                <span style={{ fontSize: 10, color: 'var(--text-muted)', display: 'block', textTransform: 'uppercase' }}>Destination</span>
-                <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{alert.dst_ip}</span>
-                <span style={{ color: 'var(--text-muted)' }}>:{alert.dst_port}</span>
+                <span style={{ fontSize: 10, color: '#64748B', display: 'block', textTransform: 'uppercase', fontWeight: 600 }}>Destination</span>
+                <span style={{ color: '#0F172A', fontWeight: 600 }}>{alert.dst_ip}</span>
+                <span style={{ color: '#64748B' }}>:{alert.dst_port}</span>
               </div>
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 10, fontSize: 11.5 }}>
-              <span style={{ color: 'var(--text-muted)' }}>Protocol:</span>
-              <span style={{ fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }}>{alert.protocol}</span>
+              <span style={{ color: '#64748B' }}>Protocol:</span>
+              <span style={{ fontWeight: 700, color: '#0F172A', fontFamily: 'var(--font-mono)' }}>{alert.protocol}</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 4, fontSize: 11.5 }}>
-              <span style={{ color: 'var(--text-muted)' }}>Underlying Flow ID:</span>
-              <span style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}>{alert.flow_id}</span>
+              <span style={{ color: '#64748B' }}>Underlying Flow ID:</span>
+              <span style={{ color: '#475569', fontFamily: 'var(--font-mono)' }}>{alert.flow_id}</span>
             </div>
           </div>
 
           {/* Empirical Detection Evidence */}
           <div className="drawer-section">
             <div className="drawer-section-title">
-              <Cpu size={14} color="#f59e0b" />
+              <Cpu size={14} color="#D97706" />
               Behavioral & Statistical Evidence
             </div>
             {alert.evidence && alert.evidence.length > 0 ? (
@@ -201,12 +203,13 @@ export const AlertDrawer: React.FC<AlertDrawerProps> = ({ alert, onClose }) => {
                   <div
                     key={i}
                     style={{
-                      padding: '7px 10px',
-                      background: 'rgba(255, 255, 255, 0.03)',
-                      borderLeft: '3px solid #6366f1',
+                      padding: '8px 12px',
+                      background: '#F8FAFC',
+                      border: '1px solid #E2E8F0',
+                      borderLeft: '3px solid #4F46E5',
                       borderRadius: '0 4px 4px 0',
                       fontSize: 12,
-                      color: 'var(--text-secondary)',
+                      color: '#334155',
                       lineHeight: 1.4,
                     }}
                   >
@@ -215,7 +218,7 @@ export const AlertDrawer: React.FC<AlertDrawerProps> = ({ alert, onClose }) => {
                 ))}
               </div>
             ) : (
-              <div style={{ fontSize: 12, color: 'var(--text-muted)', fontStyle: 'italic' }}>
+              <div style={{ fontSize: 12, color: '#64748B', fontStyle: 'italic' }}>
                 Rule-based behavioral threshold breached.
               </div>
             )}
@@ -225,7 +228,7 @@ export const AlertDrawer: React.FC<AlertDrawerProps> = ({ alert, onClose }) => {
           {alert.top_contributing_features && Object.keys(alert.top_contributing_features).length > 0 && (
             <div className="drawer-section">
               <div className="drawer-section-title">
-                <Clock size={14} color="#10b981" />
+                <Clock size={14} color="#16A34A" />
                 Feature Weights & Contributions
               </div>
               <FeatureBar features={alert.top_contributing_features} />
@@ -235,14 +238,14 @@ export const AlertDrawer: React.FC<AlertDrawerProps> = ({ alert, onClose }) => {
           {/* Read-Only Architecture Callout */}
           <div style={{
             padding: '10px 14px',
-            background: 'rgba(0, 0, 0, 0.25)',
-            border: '1px dashed var(--border)',
+            background: '#F0FDF4',
+            border: '1px solid #BBF7D0',
             borderRadius: 'var(--radius-sm)',
             fontSize: 11,
-            color: 'var(--text-muted)',
+            color: '#166534',
             lineHeight: 1.5,
           }}>
-            <div style={{ fontWeight: 700, color: '#34d399', marginBottom: 2 }}>
+            <div style={{ fontWeight: 700, color: '#16A34A', marginBottom: 2 }}>
               READ-ONLY ENCLAVE ANALYSIS
             </div>
             Detection generated via metadata telemetry without payload decryption or active network probing.

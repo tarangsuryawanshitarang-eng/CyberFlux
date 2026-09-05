@@ -215,11 +215,11 @@ export function AlertsCenter() {
                     <td>{alert.src_ip}:{alert.src_port}</td>
                     <td>{alert.dst_ip}:{alert.dst_port}</td>
                     <td>
-                      <span style={{ padding: '1px 5px', background: 'rgba(255,255,255,0.06)', borderRadius: 3, fontSize: 10.5 }}>
+                      <span style={{ padding: '2px 6px', background: '#F1F5F9', border: '1px solid #E2E8F0', borderRadius: 3, fontSize: 10.5, color: '#334155' }}>
                         {alert.protocol}
                       </span>
                     </td>
-                    <td style={{ color: '#818cf8', fontWeight: 700 }}>
+                    <td style={{ color: '#4338CA', fontWeight: 700 }}>
                       {formatConfidence(alert.confidence)}
                     </td>
                     <td style={{ maxWidth: 280, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: 'var(--text-muted)' }}>

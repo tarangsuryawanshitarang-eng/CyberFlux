@@ -1,9 +1,9 @@
 /**
  * CyberFlux V2 — Network & Ingress Topology Map
  * 
- * Clean, analytical data visualization module modeling unidirectional ingress traffic:
+ * Clean, analytical enterprise visualization modeling unidirectional ingress traffic:
  * External WAN Sources -> Unidirectional Data Diode (RX Only) -> Protected Internal Enclaves.
- * Clean typography, restrained semantic colors, and interactive node inspection.
+ * Clean light canvas, thin gray connectors, restrained semantic nodes, and clear labels.
  */
 
 import React, { useState } from 'react';
@@ -53,49 +53,49 @@ export const NetworkTopologyMap: React.FC<NetworkTopologyMapProps> = React.memo(
     <div style={{ position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
       {/* Sub-header Legend */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10, fontSize: 11.5 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-          <span style={{ display: 'flex', alignItems: 'center', gap: 5, color: 'var(--text-secondary)' }}>
-            <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#64748b' }} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+          <span style={{ display: 'flex', alignItems: 'center', gap: 5, color: '#64748B' }}>
+            <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#94A3B8' }} />
             External Sources
           </span>
-          <span style={{ display: 'flex', alignItems: 'center', gap: 5, color: '#10b981', fontWeight: 600 }}>
-            <Shield size={12} />
+          <span style={{ display: 'flex', alignItems: 'center', gap: 5, color: '#16A34A', fontWeight: 600 }}>
+            <Shield size={12} color="#16A34A" />
             Data Diode (RX Only)
           </span>
-          <span style={{ display: 'flex', alignItems: 'center', gap: 5, color: 'var(--text-secondary)' }}>
-            <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#4f46e5' }} />
+          <span style={{ display: 'flex', alignItems: 'center', gap: 5, color: '#64748B' }}>
+            <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#4F46E5' }} />
             Protected Enclave
           </span>
         </div>
-        <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: '#10b981', display: 'flex', alignItems: 'center', gap: 5 }}>
-          <Activity size={12} />
+        <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: '#16A34A', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 5 }}>
+          <Activity size={12} color="#16A34A" />
           {trafficRateMbps.toFixed(2)} Mbps
         </div>
       </div>
 
       {/* SVG Analytical Diagram */}
-      <div style={{ flex: 1, position: 'relative', minHeight: 220, background: '#090e1a', borderRadius: 8, border: '1px solid #1e293b', overflow: 'hidden' }}>
+      <div style={{ flex: 1, position: 'relative', minHeight: 220, background: '#F8FAFC', borderRadius: 8, border: '1px solid #E2E8F0', overflow: 'hidden' }}>
         <svg viewBox="0 0 480 270" style={{ width: '100%', height: '100%' }}>
           <defs>
             <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-              <path d="M 0 1 L 8 5 L 0 9 z" fill="#475569" />
+              <path d="M 0 1 L 8 5 L 0 9 z" fill="#94A3B8" />
             </marker>
             <marker id="arrow-threat" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-              <path d="M 0 1 L 8 5 L 0 9 z" fill="#ef4444" />
+              <path d="M 0 1 L 8 5 L 0 9 z" fill="#EF4444" />
             </marker>
           </defs>
 
           {/* Central Diode Container */}
-          <rect x="210" y="24" width="60" height="222" rx="6" fill="#0f172a" stroke="#334155" strokeWidth="1" />
-          <line x1="240" y1="24" x2="240" y2="246" stroke="#1e293b" strokeDasharray="3 3" />
+          <rect x="210" y="24" width="60" height="222" rx="6" fill="#FFFFFF" stroke="#CBD5E1" strokeWidth="1" />
+          <line x1="240" y1="24" x2="240" y2="246" stroke="#E2E8F0" strokeDasharray="3 3" />
           
-          <text x="240" y="125" textAnchor="middle" fill="#10b981" fontSize="10" fontWeight="700" letterSpacing="0.06em">
+          <text x="240" y="125" textAnchor="middle" fill="#16A34A" fontSize="9.5" fontWeight="700" letterSpacing="0.05em">
             DATA DIODE
           </text>
-          <text x="240" y="140" textAnchor="middle" fill="#64748b" fontSize="8.5" fontFamily="var(--font-mono)">
+          <text x="240" y="140" textAnchor="middle" fill="#64748B" fontSize="8.5" fontFamily="var(--font-mono)" fontWeight="600">
             RX ONLY
           </text>
-          <text x="240" y="153" textAnchor="middle" fill="#ef4444" fontSize="8" fontFamily="var(--font-mono)">
+          <text x="240" y="153" textAnchor="middle" fill="#DC2626" fontSize="8" fontFamily="var(--font-mono)" fontWeight="600">
             TX BLOCKED
           </text>
 
@@ -107,8 +107,8 @@ export const NetworkTopologyMap: React.FC<NetworkTopologyMapProps> = React.memo(
                 <path
                   d={`M 155 ${ext.y} C 185 ${ext.y}, 190 135, 210 135`}
                   fill="none"
-                  stroke={hasThreat ? '#ef4444' : '#334155'}
-                  strokeWidth={hasThreat ? 1.5 : 1}
+                  stroke={hasThreat ? '#EF4444' : '#CBD5E1'}
+                  strokeWidth={hasThreat ? 1.5 : 1.2}
                   strokeDasharray={hasThreat ? '4 2' : undefined}
                   markerEnd={hasThreat ? 'url(#arrow-threat)' : 'url(#arrow)'}
                 />
@@ -122,8 +122,8 @@ export const NetworkTopologyMap: React.FC<NetworkTopologyMapProps> = React.memo(
               <path
                 d={`M 270 135 C 290 135, 295 ${int.y}, 325 ${int.y}`}
                 fill="none"
-                stroke="#475569"
-                strokeWidth={1}
+                stroke="#CBD5E1"
+                strokeWidth={1.2}
                 markerEnd="url(#arrow)"
               />
             </g>
@@ -147,28 +147,28 @@ export const NetworkTopologyMap: React.FC<NetworkTopologyMapProps> = React.memo(
                   width="140"
                   height="30"
                   rx="4"
-                  fill={isHovered ? '#1e293b' : '#0f172a'}
-                  stroke={hasThreat ? '#ef4444' : isHovered ? '#4f46e5' : '#1e293b'}
+                  fill="#FFFFFF"
+                  stroke={hasThreat ? '#EF4444' : isHovered ? '#4F46E5' : '#E2E8F0'}
                   strokeWidth={hasThreat ? 1.5 : 1}
                 />
 
                 {/* Country Flag Badge */}
-                <rect x="23" y={node.y - 8} width="20" height="16" rx="2" fill="#1e293b" />
-                <text x="33" y={node.y + 4} textAnchor="middle" fill="#94a3b8" fontSize="9" fontWeight="700">
+                <rect x="23" y={node.y - 8} width="20" height="16" rx="2" fill="#F1F5F9" />
+                <text x="33" y={node.y + 4} textAnchor="middle" fill="#475569" fontSize="9" fontWeight="700">
                   {node.region}
                 </text>
 
                 {/* Node Label & IP */}
-                <text x="49" y={node.y - 1} fill="#f8fafc" fontSize="10" fontWeight="600">
+                <text x="49" y={node.y - 1} fill="#0F172A" fontSize="10.5" fontWeight="600">
                   {node.label}
                 </text>
-                <text x="49" y={node.y + 10} fill="#64748b" fontSize="8.5" fontFamily="var(--font-mono)">
+                <text x="49" y={node.y + 10} fill="#64748B" fontSize="8.5" fontFamily="var(--font-mono)">
                   {node.ip}
                 </text>
 
                 {/* Threat Badge */}
                 {hasThreat && (
-                  <circle cx="150" cy={node.y - 8} r="5" fill="#ef4444" />
+                  <circle cx="150" cy={node.y - 8} r="4.5" fill="#EF4444" />
                 )}
               </g>
             );
@@ -191,20 +191,20 @@ export const NetworkTopologyMap: React.FC<NetworkTopologyMapProps> = React.memo(
                   width="140"
                   height="30"
                   rx="4"
-                  fill={isHovered ? '#1e293b' : '#0f172a'}
-                  stroke={isHovered ? '#4f46e5' : '#1e293b'}
+                  fill="#FFFFFF"
+                  stroke={isHovered ? '#4F46E5' : '#E2E8F0'}
                   strokeWidth={1}
                 />
 
                 {/* Icon Placeholder */}
-                <circle cx="338" cy={node.y} r="6" fill="#1e293b" />
-                <circle cx="338" cy={node.y} r="2.5" fill="#4f46e5" />
+                <circle cx="338" cy={node.y} r="6" fill="#EEF2FF" />
+                <circle cx="338" cy={node.y} r="2.5" fill="#4F46E5" />
 
                 {/* Node Label & IP */}
-                <text x="350" y={node.y - 1} fill="#f8fafc" fontSize="10" fontWeight="600">
+                <text x="350" y={node.y - 1} fill="#0F172A" fontSize="10.5" fontWeight="600">
                   {node.label}
                 </text>
-                <text x="350" y={node.y + 10} fill="#64748b" fontSize="8.5" fontFamily="var(--font-mono)">
+                <text x="350" y={node.y + 10} fill="#64748B" fontSize="8.5" fontFamily="var(--font-mono)">
                   {node.ip} · {node.region}
                 </text>
               </g>
@@ -220,11 +220,11 @@ export const NetworkTopologyMap: React.FC<NetworkTopologyMapProps> = React.memo(
               bottom: 8,
               left: 12,
               right: 12,
-              padding: '6px 12px',
-              background: '#0f172a',
-              border: '1px solid #334155',
+              padding: '7px 12px',
+              background: '#FFFFFF',
+              border: '1px solid #E2E8F0',
               borderRadius: 6,
-              boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
@@ -233,13 +233,13 @@ export const NetworkTopologyMap: React.FC<NetworkTopologyMapProps> = React.memo(
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <span style={{ fontWeight: 600, color: '#f8fafc' }}>{hoveredNode.label}</span>
-              <span style={{ fontFamily: 'var(--font-mono)', color: '#94a3b8' }}>{hoveredNode.ip}</span>
+              <span style={{ fontWeight: 600, color: '#0F172A' }}>{hoveredNode.label}</span>
+              <span style={{ fontFamily: 'var(--font-mono)', color: '#64748B' }}>{hoveredNode.ip}</span>
             </div>
             <div style={{ display: 'flex', gap: 14, fontFamily: 'var(--font-mono)', fontSize: 11 }}>
-              <span>Zone: <b style={{ color: '#cbd5e1' }}>{hoveredNode.region}</b></span>
-              <span>Anomalies: <b style={{ color: hoveredNode.threats > 0 ? '#ef4444' : '#10b981' }}>{hoveredNode.threats}</b></span>
-              <span>Diode State: <b style={{ color: '#10b981' }}>RX Ingest Only</b></span>
+              <span>Zone: <b style={{ color: '#0F172A' }}>{hoveredNode.region}</b></span>
+              <span>Anomalies: <b style={{ color: hoveredNode.threats > 0 ? '#DC2626' : '#16A34A' }}>{hoveredNode.threats}</b></span>
+              <span>Diode State: <b style={{ color: '#16A34A' }}>RX Ingest Only</b></span>
             </div>
           </div>
         )}

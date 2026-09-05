@@ -72,7 +72,7 @@ export function Sidebar() {
         </div>
         <div>
           <div className="sidebar-brand-title">CyberFlux</div>
-          <div className="sidebar-brand-subtitle">AI SOC V2 · UNIDIRECTIONAL</div>
+          <div className="sidebar-brand-subtitle">AI SOC</div>
         </div>
       </div>
 
@@ -98,9 +98,9 @@ export function Sidebar() {
                   <span
                     className="nav-item-badge"
                     style={item.isCritical ? undefined : {
-                      background: 'rgba(99, 102, 241, 0.2)',
-                      color: '#a5b4fc',
-                      borderColor: 'rgba(99, 102, 241, 0.3)',
+                      background: '#EEF2FF',
+                      color: '#4338CA',
+                      border: '1px solid #C7D2FE',
                     }}
                   >
                     {item.badge}
@@ -114,21 +114,25 @@ export function Sidebar() {
 
       {/* Security Posture Footer (Passive Data Diode Constraints) */}
       <div className="sidebar-footer">
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 5 }}>
-          <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#10b981' }} />
-          <span>MODE: READ-ONLY INGEST</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 5 }}>
+          <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#10B981' }} />
+          <span style={{ fontWeight: 600, color: '#0F172A' }}>INGEST:</span>
+          <span style={{ color: '#16A34A', fontWeight: 600 }}>READ-ONLY</span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 5 }}>
-          <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#ef4444' }} />
-          <span>RETURN PATH: BLOCKED</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 5 }}>
+          <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#EF4444' }} />
+          <span style={{ fontWeight: 600, color: '#0F172A' }}>RETURN PATH:</span>
+          <span style={{ color: '#DC2626', fontWeight: 600 }}>BLOCKED</span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 5 }}>
-          <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#f59e0b' }} />
-          <span>ACTIVE PROBING: DISABLED</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 5 }}>
+          <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#F59E0B' }} />
+          <span style={{ fontWeight: 600, color: '#0F172A' }}>PROBING:</span>
+          <span style={{ color: '#D97706', fontWeight: 600 }}>DISABLED</span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#64748b' }} />
-          <span>PAYLOAD DECRYPT: DISABLED</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+          <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#94A3B8' }} />
+          <span style={{ fontWeight: 600, color: '#0F172A' }}>DECRYPT:</span>
+          <span style={{ color: '#64748B', fontWeight: 600 }}>DISABLED</span>
         </div>
       </div>
     </aside>
