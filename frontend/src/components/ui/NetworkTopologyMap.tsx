@@ -1,13 +1,13 @@
 /**
- * CyberFlux V2 — Geographic & Network Activity Map
+ * CyberFlux V2 — Network & Ingress Topology Map
  * 
- * Interactive SVG network topology visualizer showing external ingress traffic
- * crossing the unidirectional data diode tap into internal protected subnets.
- * Features animated flow pulses, threat hotspot indicators, and hover tooltips.
+ * Clean, analytical data visualization module modeling unidirectional ingress traffic:
+ * External WAN Sources -> Unidirectional Data Diode (RX Only) -> Protected Internal Enclaves.
+ * Clean typography, restrained semantic colors, and interactive node inspection.
  */
 
 import React, { useState } from 'react';
-import { Shield, Activity, MapPin } from 'lucide-react';
+import { Shield, Activity } from 'lucide-react';
 import type { Alert } from '../../types';
 
 interface NetworkTopologyMapProps {
@@ -19,7 +19,7 @@ interface IngressNode {
   id: string;
   label: string;
   ip: string;
-  country: string;
+  region: string;
   x: number;
   y: number;
   threats: number;
@@ -29,138 +29,110 @@ interface IngressNode {
 export const NetworkTopologyMap: React.FC<NetworkTopologyMapProps> = React.memo(({ alerts, trafficRateMbps }) => {
   const [hoveredNode, setHoveredNode] = useState<IngressNode | null>(null);
 
-  // Group alerts by destination or source to identify targeted nodes
   const threatCountsByIp = alerts.reduce<Record<string, number>>((acc, a) => {
     acc[a.src_ip] = (acc[a.src_ip] || 0) + 1;
     acc[a.dst_ip] = (acc[a.dst_ip] || 0) + 1;
     return acc;
   }, {});
 
-  const nodes: IngressNode[] = [
-    // External Ingress (Left)
-    { id: 'ext-1', label: 'WAN Gateway (US-East)', ip: '198.51.100.24', country: 'US', x: 45, y: 55, threats: threatCountsByIp['198.51.100.24'] || (alerts.length > 0 ? 3 : 0), type: 'external' },
-    { id: 'ext-2', label: 'External Transit (EU-Central)', ip: '83.13.30.183', country: 'DE', x: 45, y: 115, threats: threatCountsByIp['83.13.30.183'] || (alerts.length > 1 ? 5 : 0), type: 'external' },
-    { id: 'ext-3', label: 'Edge Ingress (APAC-S)', ip: '219.21.3.188', country: 'JP', x: 45, y: 175, threats: threatCountsByIp['219.21.3.188'] || (alerts.length > 2 ? 4 : 0), type: 'external' },
-    { id: 'ext-4', label: 'Tor / Proxy Exit (Global)', ip: '185.220.101.5', country: 'NL', x: 45, y: 235, threats: threatCountsByIp['185.220.101.5'] || (alerts.length > 3 ? 6 : 0), type: 'external' },
+  const externalNodes: IngressNode[] = [
+    { id: 'ext-1', label: 'WAN Gateway', ip: '198.51.100.24', region: 'US', x: 50, y: 45, threats: threatCountsByIp['198.51.100.24'] || (alerts.length > 0 ? 3 : 0), type: 'external' },
+    { id: 'ext-2', label: 'EU Transit', ip: '83.13.30.183', region: 'DE', x: 50, y: 105, threats: threatCountsByIp['83.13.30.183'] || (alerts.length > 1 ? 5 : 0), type: 'external' },
+    { id: 'ext-3', label: 'APAC Edge', ip: '219.21.3.188', region: 'JP', x: 50, y: 165, threats: threatCountsByIp['219.21.3.188'] || (alerts.length > 2 ? 4 : 0), type: 'external' },
+    { id: 'ext-4', label: 'Global Relay', ip: '185.220.101.5', region: 'NL', x: 50, y: 225, threats: threatCountsByIp['185.220.101.5'] || (alerts.length > 3 ? 6 : 0), type: 'external' },
+  ];
 
-    // Data Diode Tap (Center)
-    { id: 'diode-rx', label: 'RX Photodiode Tap', ip: 'Data Diode (No TX)', country: 'LOCAL', x: 210, y: 145, threats: 0, type: 'diode' },
-
-    // Internal Protected Zones (Right)
-    { id: 'int-1', label: 'Core Ingest Enclave', ip: '10.0.1.0/24', country: 'VLAN 10', x: 375, y: 55, threats: alerts.filter(a => a.dst_ip.startsWith('10.0.1')).length, type: 'internal' },
-    { id: 'int-2', label: 'DNS & Directory Cluster', ip: '10.0.2.0/24', country: 'VLAN 20', x: 375, y: 115, threats: alerts.filter(a => a.dst_ip.startsWith('10.0.2') || a.dst_port === 53).length, type: 'internal' },
-    { id: 'int-3', label: 'Enterprise DMZ Services', ip: '172.16.0.0/16', country: 'VLAN 30', x: 375, y: 175, threats: alerts.filter(a => a.dst_ip.startsWith('172.16')).length, type: 'internal' },
-    { id: 'int-4', label: 'Secured Data Vault', ip: '192.168.1.0/24', country: 'VLAN 40', x: 375, y: 235, threats: alerts.filter(a => a.dst_ip.startsWith('192.168.1')).length, type: 'internal' },
+  const internalNodes: IngressNode[] = [
+    { id: 'int-1', label: 'Core Ingest Enclave', ip: '10.0.1.0/24', region: 'VLAN 10', x: 410, y: 45, threats: alerts.filter(a => a.dst_ip.startsWith('10.0.1')).length, type: 'internal' },
+    { id: 'int-2', label: 'DNS & Directory Cluster', ip: '10.0.2.0/24', region: 'VLAN 20', x: 410, y: 105, threats: alerts.filter(a => a.dst_ip.startsWith('10.0.2') || a.dst_port === 53).length, type: 'internal' },
+    { id: 'int-3', label: 'Enterprise DMZ Services', ip: '172.16.0.0/16', region: 'VLAN 30', x: 410, y: 165, threats: alerts.filter(a => a.dst_ip.startsWith('172.16')).length, type: 'internal' },
+    { id: 'int-4', label: 'Secured Data Vault', ip: '192.168.1.0/24', region: 'VLAN 40', x: 410, y: 225, threats: alerts.filter(a => a.dst_ip.startsWith('192.168.1')).length, type: 'internal' },
   ];
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
-      {/* Topology Header bar */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8, fontSize: 11 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-          <span style={{ display: 'flex', alignItems: 'center', gap: 4, color: 'var(--text-muted)' }}>
-            <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#6366f1', display: 'inline-block' }} /> External WAN
+      {/* Sub-header Legend */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10, fontSize: 11.5 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <span style={{ display: 'flex', alignItems: 'center', gap: 5, color: 'var(--text-secondary)' }}>
+            <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#64748b' }} />
+            External Sources
           </span>
-          <span style={{ display: 'flex', alignItems: 'center', gap: 4, color: '#10b981' }}>
-            <Shield size={11} /> Unidirectional Diode
+          <span style={{ display: 'flex', alignItems: 'center', gap: 5, color: '#10b981', fontWeight: 600 }}>
+            <Shield size={12} />
+            Data Diode (RX Only)
           </span>
-          <span style={{ display: 'flex', alignItems: 'center', gap: 4, color: '#38bdf8' }}>
-            <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#38bdf8', display: 'inline-block' }} /> Protected Enclaves
+          <span style={{ display: 'flex', alignItems: 'center', gap: 5, color: 'var(--text-secondary)' }}>
+            <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#4f46e5' }} />
+            Protected Enclave
           </span>
         </div>
-        <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: '#10b981', display: 'flex', alignItems: 'center', gap: 4 }}>
-          <Activity size={12} /> {trafficRateMbps.toFixed(2)} Mbps Line Rate
+        <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: '#10b981', display: 'flex', alignItems: 'center', gap: 5 }}>
+          <Activity size={12} />
+          {trafficRateMbps.toFixed(2)} Mbps
         </div>
       </div>
 
-      {/* SVG Canvas */}
-      <div style={{ flex: 1, position: 'relative', minHeight: 220, background: 'rgba(11, 19, 36, 0.4)', borderRadius: 8, border: '1px solid var(--border)' }}>
-        <svg viewBox="0 0 440 290" style={{ width: '100%', height: '100%' }}>
+      {/* SVG Analytical Diagram */}
+      <div style={{ flex: 1, position: 'relative', minHeight: 220, background: '#090e1a', borderRadius: 8, border: '1px solid #1e293b', overflow: 'hidden' }}>
+        <svg viewBox="0 0 480 270" style={{ width: '100%', height: '100%' }}>
           <defs>
-            {/* Linear gradients for transmission paths */}
-            <linearGradient id="flowGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#6366f1" stopOpacity="0.8" />
-              <stop offset="50%" stopColor="#10b981" stopOpacity="0.9" />
-              <stop offset="100%" stopColor="#38bdf8" stopOpacity="0.8" />
-            </linearGradient>
-
-            <linearGradient id="threatGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#ef4444" stopOpacity="0.9" />
-              <stop offset="50%" stopColor="#f59e0b" stopOpacity="0.8" />
-              <stop offset="100%" stopColor="#ef4444" stopOpacity="0.9" />
-            </linearGradient>
-
-            {/* Pulsing animation styles */}
-            <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="3" result="blur" />
-              <feComposite in="SourceGraphic" in2="blur" operator="over" />
-            </filter>
+            <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+              <path d="M 0 1 L 8 5 L 0 9 z" fill="#475569" />
+            </marker>
+            <marker id="arrow-threat" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+              <path d="M 0 1 L 8 5 L 0 9 z" fill="#ef4444" />
+            </marker>
           </defs>
 
-          {/* Background grid markings */}
-          <line x1="125" y1="20" x2="125" y2="270" stroke="rgba(255,255,255,0.03)" strokeDasharray="3 3" />
-          <line x1="295" y1="20" x2="295" y2="270" stroke="rgba(255,255,255,0.03)" strokeDasharray="3 3" />
-
-          {/* Diode Barrier Visual Representation */}
-          <rect x="200" y="30" width="20" height="230" rx="4" fill="rgba(16, 185, 129, 0.06)" stroke="rgba(16, 185, 129, 0.3)" strokeDasharray="4 2" />
-          <text x="210" y="275" textAnchor="middle" fill="#10b981" fontSize="9" fontWeight="700" letterSpacing="0.08em">
-            ONE-WAY RX DIODE
+          {/* Central Diode Container */}
+          <rect x="210" y="24" width="60" height="222" rx="6" fill="#0f172a" stroke="#334155" strokeWidth="1" />
+          <line x1="240" y1="24" x2="240" y2="246" stroke="#1e293b" strokeDasharray="3 3" />
+          
+          <text x="240" y="125" textAnchor="middle" fill="#10b981" fontSize="10" fontWeight="700" letterSpacing="0.06em">
+            DATA DIODE
+          </text>
+          <text x="240" y="140" textAnchor="middle" fill="#64748b" fontSize="8.5" fontFamily="var(--font-mono)">
+            RX ONLY
+          </text>
+          <text x="240" y="153" textAnchor="middle" fill="#ef4444" fontSize="8" fontFamily="var(--font-mono)">
+            TX BLOCKED
           </text>
 
-          {/* Ingress transmission paths (External -> Diode) */}
-          {[55, 115, 175, 235].map((y, idx) => {
-            const hasThreat = alerts.length > idx;
+          {/* Ingress Paths: External -> Diode */}
+          {externalNodes.map((ext, idx) => {
+            const hasThreat = ext.threats > 0;
             return (
-              <g key={`path-in-${idx}`}>
+              <g key={`in-${idx}`}>
                 <path
-                  d={`M 55 ${y} C 120 ${y}, 140 145, 205 145`}
+                  d={`M 155 ${ext.y} C 185 ${ext.y}, 190 135, 210 135`}
                   fill="none"
-                  stroke={hasThreat ? 'url(#threatGrad)' : 'url(#flowGrad)'}
-                  strokeWidth={hasThreat ? 2 : 1.2}
-                  strokeOpacity={hasThreat ? 0.75 : 0.35}
+                  stroke={hasThreat ? '#ef4444' : '#334155'}
+                  strokeWidth={hasThreat ? 1.5 : 1}
+                  strokeDasharray={hasThreat ? '4 2' : undefined}
+                  markerEnd={hasThreat ? 'url(#arrow-threat)' : 'url(#arrow)'}
                 />
-                {/* Animated flow particle */}
-                <circle r={hasThreat ? 3 : 2} fill={hasThreat ? '#ef4444' : '#10b981'}>
-                  <animateMotion
-                    path={`M 55 ${y} C 120 ${y}, 140 145, 205 145`}
-                    dur={`${2.2 + idx * 0.4}s`}
-                    repeatCount="indefinite"
-                  />
-                </circle>
               </g>
             );
           })}
 
-          {/* Egress distribution paths (Diode -> Internal) */}
-          {[55, 115, 175, 235].map((y, idx) => (
-            <g key={`path-out-${idx}`}>
+          {/* Egress Paths: Diode -> Internal Enclave */}
+          {internalNodes.map((int, idx) => (
+            <g key={`out-${idx}`}>
               <path
-                d={`M 215 145 C 280 145, 300 ${y}, 365 ${y}`}
+                d={`M 270 135 C 290 135, 295 ${int.y}, 325 ${int.y}`}
                 fill="none"
-                stroke="url(#flowGrad)"
-                strokeWidth={1.2}
-                strokeOpacity={0.35}
+                stroke="#475569"
+                strokeWidth={1}
+                markerEnd="url(#arrow)"
               />
-              <circle r={2} fill="#38bdf8">
-                <animateMotion
-                  path={`M 215 145 C 280 145, 300 ${y}, 365 ${y}`}
-                  dur={`${2.5 + idx * 0.3}s`}
-                  repeatCount="indefinite"
-                />
-              </circle>
             </g>
           ))}
 
-          {/* Render Nodes */}
-          {nodes.map((node) => {
-            const isThreatNode = node.threats > 0;
+          {/* External Source Nodes (Left) */}
+          {externalNodes.map((node) => {
             const isHovered = hoveredNode?.id === node.id;
-            const nodeFill = node.type === 'diode'
-              ? '#10b981'
-              : node.type === 'external'
-                ? isThreatNode ? '#ef4444' : '#6366f1'
-                : '#38bdf8';
-
+            const hasThreat = node.threats > 0;
             return (
               <g
                 key={node.id}
@@ -168,61 +140,79 @@ export const NetworkTopologyMap: React.FC<NetworkTopologyMapProps> = React.memo(
                 onMouseEnter={() => setHoveredNode(node)}
                 onMouseLeave={() => setHoveredNode(null)}
               >
-                {/* Radar pulse for active threats */}
-                {isThreatNode && (
-                  <circle cx={node.x} cy={node.y} r={14} fill="none" stroke="#ef4444" strokeWidth={1.5} opacity={0.6}>
-                    <animate attributeName="r" values="8;20" dur="1.8s" repeatCount="indefinite" />
-                    <animate attributeName="opacity" values="0.8;0" dur="1.8s" repeatCount="indefinite" />
-                  </circle>
-                )}
-
-                {/* Node Outer Ring */}
-                <circle
-                  cx={node.x}
-                  cy={node.y}
-                  r={isHovered ? 9 : 7}
-                  fill="#0b1324"
-                  stroke={nodeFill}
-                  strokeWidth={isHovered ? 2.5 : 1.8}
-                  filter={isHovered ? 'url(#glow)' : undefined}
+                {/* Node Box */}
+                <rect
+                  x="15"
+                  y={node.y - 15}
+                  width="140"
+                  height="30"
+                  rx="4"
+                  fill={isHovered ? '#1e293b' : '#0f172a'}
+                  stroke={hasThreat ? '#ef4444' : isHovered ? '#4f46e5' : '#1e293b'}
+                  strokeWidth={hasThreat ? 1.5 : 1}
                 />
 
-                {/* Node Core */}
-                <circle
-                  cx={node.x}
-                  cy={node.y}
-                  r={3.5}
-                  fill={nodeFill}
-                />
-
-                {/* Node Labels */}
-                <text
-                  x={node.type === 'external' ? node.x - 12 : node.type === 'internal' ? node.x + 12 : node.x}
-                  y={node.type === 'diode' ? node.y - 12 : node.y + 3}
-                  textAnchor={node.type === 'external' ? 'end' : node.type === 'internal' ? 'start' : 'middle'}
-                  fill={isHovered ? '#f8fafc' : 'var(--text-secondary)'}
-                  fontSize="9.5"
-                  fontWeight={isHovered ? '700' : '500'}
-                  fontFamily="var(--font-mono)"
-                >
-                  {node.country !== 'LOCAL' ? `[${node.country}] ` : ''}{node.ip}
+                {/* Country Flag Badge */}
+                <rect x="23" y={node.y - 8} width="20" height="16" rx="2" fill="#1e293b" />
+                <text x="33" y={node.y + 4} textAnchor="middle" fill="#94a3b8" fontSize="9" fontWeight="700">
+                  {node.region}
                 </text>
 
-                {/* Threat badge indicator */}
-                {isThreatNode && (
-                  <g transform={`translate(${node.type === 'external' ? node.x - 22 : node.x + 10}, ${node.y - 12})`}>
-                    <rect width="18" height="11" rx="3" fill="#ef4444" />
-                    <text x="9" y="8.5" textAnchor="middle" fill="#ffffff" fontSize="7.5" fontWeight="800">
-                      {node.threats}
-                    </text>
-                  </g>
+                {/* Node Label & IP */}
+                <text x="49" y={node.y - 1} fill="#f8fafc" fontSize="10" fontWeight="600">
+                  {node.label}
+                </text>
+                <text x="49" y={node.y + 10} fill="#64748b" fontSize="8.5" fontFamily="var(--font-mono)">
+                  {node.ip}
+                </text>
+
+                {/* Threat Badge */}
+                {hasThreat && (
+                  <circle cx="150" cy={node.y - 8} r="5" fill="#ef4444" />
                 )}
+              </g>
+            );
+          })}
+
+          {/* Internal Protected Nodes (Right) */}
+          {internalNodes.map((node) => {
+            const isHovered = hoveredNode?.id === node.id;
+            return (
+              <g
+                key={node.id}
+                style={{ cursor: 'pointer' }}
+                onMouseEnter={() => setHoveredNode(node)}
+                onMouseLeave={() => setHoveredNode(null)}
+              >
+                {/* Node Box */}
+                <rect
+                  x="325"
+                  y={node.y - 15}
+                  width="140"
+                  height="30"
+                  rx="4"
+                  fill={isHovered ? '#1e293b' : '#0f172a'}
+                  stroke={isHovered ? '#4f46e5' : '#1e293b'}
+                  strokeWidth={1}
+                />
+
+                {/* Icon Placeholder */}
+                <circle cx="338" cy={node.y} r="6" fill="#1e293b" />
+                <circle cx="338" cy={node.y} r="2.5" fill="#4f46e5" />
+
+                {/* Node Label & IP */}
+                <text x="350" y={node.y - 1} fill="#f8fafc" fontSize="10" fontWeight="600">
+                  {node.label}
+                </text>
+                <text x="350" y={node.y + 10} fill="#64748b" fontSize="8.5" fontFamily="var(--font-mono)">
+                  {node.ip} · {node.region}
+                </text>
               </g>
             );
           })}
         </svg>
 
-        {/* Hover Tooltip Overlay */}
+        {/* Hover Information Banner */}
         {hoveredNode && (
           <div
             style={{
@@ -231,26 +221,25 @@ export const NetworkTopologyMap: React.FC<NetworkTopologyMapProps> = React.memo(
               left: 12,
               right: 12,
               padding: '6px 12px',
-              background: 'rgba(17, 28, 51, 0.95)',
-              border: '1px solid var(--border)',
+              background: '#0f172a',
+              border: '1px solid #334155',
               borderRadius: 6,
-              boxShadow: '0 4px 16px rgba(0,0,0,0.6)',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-              fontSize: 11,
+              fontSize: 11.5,
               pointerEvents: 'none',
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <MapPin size={13} color="#818cf8" />
-              <span style={{ fontWeight: 700, color: '#f8fafc' }}>{hoveredNode.label}</span>
-              <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>{hoveredNode.ip}</span>
+              <span style={{ fontWeight: 600, color: '#f8fafc' }}>{hoveredNode.label}</span>
+              <span style={{ fontFamily: 'var(--font-mono)', color: '#94a3b8' }}>{hoveredNode.ip}</span>
             </div>
-            <div style={{ display: 'flex', gap: 12, fontFamily: 'var(--font-mono)' }}>
-              <span>Region: <b style={{ color: '#818cf8' }}>{hoveredNode.country}</b></span>
-              <span>Threats: <b style={{ color: hoveredNode.threats > 0 ? '#ef4444' : '#10b981' }}>{hoveredNode.threats}</b></span>
-              <span>Flow Direction: <b style={{ color: '#10b981' }}>Read-Only Ingress</b></span>
+            <div style={{ display: 'flex', gap: 14, fontFamily: 'var(--font-mono)', fontSize: 11 }}>
+              <span>Zone: <b style={{ color: '#cbd5e1' }}>{hoveredNode.region}</b></span>
+              <span>Anomalies: <b style={{ color: hoveredNode.threats > 0 ? '#ef4444' : '#10b981' }}>{hoveredNode.threats}</b></span>
+              <span>Diode State: <b style={{ color: '#10b981' }}>RX Ingest Only</b></span>
             </div>
           </div>
         )}

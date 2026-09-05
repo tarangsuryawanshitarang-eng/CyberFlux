@@ -8,70 +8,71 @@
    ================================================================= */
 
 :root {
-  /* Surfaces & Backgrounds */
-  --bg-app: #070b14;
-  --bg-secondary: #0b1324;
-  --bg-surface: #111c33;
-  --bg-surface-elevated: #172644;
-  --bg-surface-soft: rgba(255, 255, 255, 0.04);
-  --bg-sidebar: #09101f;
-  --bg-sidebar-hover: rgba(255, 255, 255, 0.06);
+  /* Surfaces & Backgrounds — Calm Enterprise Slate */
+  --bg-app: #080c16;
+  --bg-secondary: #0c1220;
+  --bg-surface: #0f172a;
+  --bg-surface-elevated: #1e293b;
+  --bg-surface-soft: rgba(255, 255, 255, 0.03);
+  --bg-sidebar: #090e1a;
+  --bg-sidebar-hover: rgba(255, 255, 255, 0.05);
 
-  /* Brand Accents */
-  --primary: #6366f1;
-  --primary-hover: #4f46e5;
-  --primary-soft: rgba(99, 102, 241, 0.14);
-  --primary-border: rgba(99, 102, 241, 0.35);
+  /* Brand Accents — Calm Corporate Indigo & Slate */
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --primary-soft: rgba(79, 70, 229, 0.12);
+  --primary-border: rgba(79, 70, 229, 0.28);
 
-  --accent-purple: #8b5cf6;
-  --accent-purple-soft: rgba(139, 92, 246, 0.14);
+  --accent-purple: #6366f1;
+  --accent-purple-soft: rgba(99, 102, 241, 0.10);
 
-  /* Semantic / Security States */
+  /* Semantic / Security States — Restrained & Meaningful */
   --success: #10b981;
-  --success-soft: rgba(16, 185, 129, 0.12);
-  --success-border: rgba(16, 185, 129, 0.35);
+  --success-soft: rgba(16, 185, 129, 0.10);
+  --success-border: rgba(16, 185, 129, 0.25);
 
   --danger: #ef4444;
-  --danger-soft: rgba(239, 68, 68, 0.14);
-  --danger-border: rgba(239, 68, 68, 0.40);
+  --danger-soft: rgba(239, 68, 68, 0.10);
+  --danger-border: rgba(239, 68, 68, 0.30);
 
   --warning: #f59e0b;
-  --warning-soft: rgba(245, 158, 11, 0.12);
-  --warning-border: rgba(245, 158, 11, 0.35);
+  --warning-soft: rgba(245, 158, 11, 0.10);
+  --warning-border: rgba(245, 158, 11, 0.25);
 
-  --info: #38bdf8;
-  --info-soft: rgba(56, 189, 248, 0.12);
-  --info-border: rgba(56, 189, 248, 0.35);
+  --info: #0284c7;
+  --info-soft: rgba(2, 132, 199, 0.10);
+  --info-border: rgba(2, 132, 199, 0.25);
 
-  /* Text Hierarchy */
+  /* Text Hierarchy — High Readability */
   --text-primary: #f8fafc;
-  --text-secondary: #cbd5e1;
-  --text-muted: #94a3b8;
-  --text-inverse: #070b14;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-inverse: #080c16;
 
-  /* Borders & Dividers */
+  /* Borders & Dividers — Subtle & Clean */
   --border: #1e293b;
-  --border-light: rgba(255, 255, 255, 0.07);
-  --border-dark: #0f172a;
+  --border-light: rgba(255, 255, 255, 0.06);
+  --border-dark: #090d16;
 
-  /* Radius & Shadows */
+  /* Radius & Shadows — Subtle Enterprise Elevation */
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 14px;
   --radius-xl: 18px;
 
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.45);
-  --shadow-lg: 0 12px 36px rgba(0, 0, 0, 0.65);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 10px 28px rgba(0, 0, 0, 0.5);
 
   /* Typography */
   --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
   /* Layout dimensions */
-  --sidebar-width: 244px;
-  --header-height: 60px;
+  --sidebar-width: 240px;
+  --header-height: 58px;
 }
+
 
 /* ─── Global Base ─────────────────────────────────────────────────── */
 
