@@ -6,6 +6,7 @@ import React from 'react';
 import type { Severity, ThreatStatus, ThreatClass } from '../../types';
 import { MITRE_ATTACK_MAPPING } from '../../types';
 export { AlertDrawer } from './AlertDrawer';
+export { NetworkTopologyMap } from './NetworkTopologyMap';
 
 // ─── Severity Badge ──────────────────────────────────────────────────
 
