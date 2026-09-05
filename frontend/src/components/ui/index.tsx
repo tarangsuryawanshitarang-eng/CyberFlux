@@ -1,9 +1,11 @@
 /**
- * CyberFlux — Reusable UI Components
+ * CyberFlux V2 — Reusable UI Components
  */
 
 import React from 'react';
-import type { Severity, ThreatStatus } from '../../types';
+import type { Severity, ThreatStatus, ThreatClass } from '../../types';
+import { MITRE_ATTACK_MAPPING } from '../../types';
+export { AlertDrawer } from './AlertDrawer';
 
 // ─── Severity Badge ──────────────────────────────────────────────────
 
@@ -31,6 +33,19 @@ export const ThreatStatusBadge = React.memo(function ThreatStatusBadge({ status 
   );
 });
 
+// ─── MITRE ATT&CK Badge ──────────────────────────────────────────────
+
+export const MitreBadge = React.memo(function MitreBadge({ threatClass }: { threatClass: ThreatClass }) {
+  const mapping = MITRE_ATTACK_MAPPING[threatClass];
+  if (!mapping || mapping.techniqueId === 'N/A') return null;
+
+  return (
+    <span className="mitre-badge" title={`${mapping.tactic} → ${mapping.techniqueName}`}>
+      {mapping.techniqueId}
+    </span>
+  );
+});
+
 // ─── Metric Card ─────────────────────────────────────────────────────
 
 interface MetricCardProps {
@@ -46,10 +61,10 @@ export const MetricCard = React.memo(function MetricCard({
   label, value, icon, change, changeType, color,
 }: MetricCardProps) {
   return (
-    <div className="card metric-card">
+    <div className="metric-card">
       <div className="metric-label">
         {icon}
-        {label}
+        <span>{label}</span>
       </div>
       <div className="metric-value" style={color ? { color } : undefined}>
         {value}
@@ -111,6 +126,28 @@ export function SecurityBanner() {
           <span className={`value ${item.className}`}>{item.value}</span>
         </div>
       ))}
+    </div>
+  );
+}
+
+// ─── Empty State ─────────────────────────────────────────────────────
+
+interface EmptyStateProps {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  action?: React.ReactNode;
+}
+
+export function EmptyState({ icon, title, description, action }: EmptyStateProps) {
+  return (
+    <div className="empty-state">
+      <div className="empty-state-icon">
+        {icon}
+      </div>
+      <div className="empty-state-title">{title}</div>
+      <div className="empty-state-desc">{description}</div>
+      {action && <div style={{ marginTop: 14 }}>{action}</div>}
     </div>
   );
 }

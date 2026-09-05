@@ -123,8 +123,13 @@ export interface SystemMetrics {
   flows_per_sec: number;
   active_flows: number;
   detection_latency_ms: number;
+  latency_p50_ms?: number;
+  latency_p95_ms?: number;
+  latency_p99_ms?: number;
   processing_latency_ms: number;
   ws_latency_ms: number;
+  avg_confidence?: number;
+  anomaly_detection_rate?: number;
   dropped_events: number;
   active_connections: number;
   memory_usage_mb: number;
@@ -197,6 +202,60 @@ export const THREAT_CLASS_LABELS: Record<ThreatClass, string> = {
   DATA_EXFILTRATION: 'Data Exfiltration',
 };
 
+export interface MitreMapping {
+  tactic: string;
+  techniqueId: string;
+  techniqueName: string;
+}
+
+export const MITRE_ATTACK_MAPPING: Record<ThreatClass, MitreMapping> = {
+  BENIGN: {
+    tactic: 'Normal Telemetry',
+    techniqueId: 'N/A',
+    techniqueName: 'Baseline Network Activity',
+  },
+  SYN_FLOOD: {
+    tactic: 'Impact (TA0040)',
+    techniqueId: 'T1498',
+    techniqueName: 'Network Denial of Service',
+  },
+  UDP_REFLECTION: {
+    tactic: 'Impact (TA0040)',
+    techniqueId: 'T1498.002',
+    techniqueName: 'Reflection Amplification',
+  },
+  BOTNET_C2: {
+    tactic: 'Command & Control (TA0011)',
+    techniqueId: 'T1071',
+    techniqueName: 'Application Layer Protocol',
+  },
+  DGA_DOMAIN: {
+    tactic: 'Command & Control (TA0011)',
+    techniqueId: 'T1568.002',
+    techniqueName: 'Dynamic Resolution: DGA',
+  },
+  DNS_TUNNELING: {
+    tactic: 'Exfiltration (TA0010)',
+    techniqueId: 'T1048.003',
+    techniqueName: 'Exfiltration Over DNS',
+  },
+  MALWARE_TLS: {
+    tactic: 'Command & Control (TA0011)',
+    techniqueId: 'T1573',
+    techniqueName: 'Encrypted Channel',
+  },
+  RECON_SCAN: {
+    tactic: 'Reconnaissance (TA0043)',
+    techniqueId: 'T1046',
+    techniqueName: 'Network Service Discovery',
+  },
+  DATA_EXFILTRATION: {
+    tactic: 'Exfiltration (TA0010)',
+    techniqueId: 'T1041',
+    techniqueName: 'Exfiltration Over C2 Channel',
+  },
+};
+
 export const SEVERITY_ORDER: Record<Severity, number> = {
   INFO: 0,
   LOW: 1,
@@ -204,3 +263,4 @@ export const SEVERITY_ORDER: Record<Severity, number> = {
   HIGH: 3,
   CRITICAL: 4,
 };
+

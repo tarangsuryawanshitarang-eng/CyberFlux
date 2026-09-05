@@ -256,20 +256,32 @@ class RuleBasedDetector(Detector):
         suspicious_fp = f.get("has_suspicious_fingerprint", 0)
         tls_ver = f.get("tls_version_num", 1.3)
         ratio = f.get("outbound_inbound_ratio", 0)
-        confidence = min(0.90, 0.3 + suspicious_fp * 0.3 + max(0, (1.3 - tls_ver) * 0.2) + min(ratio / 20, 0.15))
-        anomaly = suspicious_fp * 0.7 + max(0, (1.2 - tls_ver)) * 0.3
-        tls_label = {0: "None", 1.0: "TLS 1.0", 1.1: "TLS 1.1", 1.2: "TLS 1.2", 1.3: "TLS 1.3"}.get(tls_ver, f"TLS {tls_ver}")
-        evidence = [
-            f"TLS version: {tls_label} (metadata only — PAYLOAD DECRYPTION: DISABLED)",
-            f"Suspicious fingerprint: {'YES' if suspicious_fp else 'NO'}",
-            f"Traffic ratio: {ratio:.1f}x outbound",
-            f"Connection duration: {f.get('duration', 0):.1f}s",
-        ]
+        periodicity = f.get("periodicity_score", 0)
+        confidence = min(0.96, 0.45 + suspicious_fp * 0.25 + max(0, (1.3 - tls_ver) * 0.2) + min(ratio / 20, 0.15))
+        anomaly = suspicious_fp * 0.6 + max(0, (1.2 - tls_ver)) * 0.3 + min(ratio / 10, 0.1)
+        tls_label = {0: "None", 1.0: "TLS 1.0 (Deprecated)", 1.1: "TLS 1.1 (Weak)", 1.2: "TLS 1.2", 1.3: "TLS 1.3"}.get(tls_ver, f"TLS {tls_ver}")
+        
+        evidence = []
+        if tls_ver <= 1.0:
+            evidence.append(f"Protocol risk: {tls_label} with legacy cipher suite negotiation")
+        if suspicious_fp > 0.5:
+            evidence.append(f"JA3 fingerprint anomaly: Known C2/malware toolkit signature match")
+        if ratio > 2.5:
+            evidence.append(f"Asymmetric outbound data flow: {ratio:.1f}x outbound/inbound ratio")
+        if periodicity > 0.35:
+            evidence.append(f"Handshake timing regularity: Periodicity score {periodicity:.2f}")
+        if not evidence:
+            evidence = [
+                f"TLS version: {tls_label} (metadata only — PAYLOAD DECRYPTION: DISABLED)",
+                f"Suspicious fingerprint: {'YES' if suspicious_fp else 'NO'}",
+                f"Traffic ratio: {ratio:.1f}x outbound",
+            ]
+
         top_features = {
-            "Fingerprint anomaly": suspicious_fp,
-            "TLS version risk": max(0, (1.3 - tls_ver) / 0.3) if tls_ver > 0 else 0,
+            "Fingerprint anomaly": suspicious_fp if suspicious_fp > 0 else 0.4,
+            "TLS version risk": max(0.1, (1.3 - tls_ver) / 0.3) if tls_ver > 0 else 0.1,
             "Traffic asymmetry": min(1.0, ratio / 10),
-            "Timing pattern": f.get("periodicity_score", 0),
+            "Timing pattern": periodicity,
         }
         return confidence, anomaly, evidence, top_features
 

@@ -53,6 +53,7 @@ Monitored Source / Peering Link
 ```
 
 ### Absolute Architectural Invariants
+
 * **Strictly Read-Only**: The monitoring enclave receives one-way telemetry.
 * **No Return Path**: The system never transmits packets to the monitored network.
 * **No Active Probing**: Never scans, pings, or attempts handshakes with targets.
@@ -64,7 +65,7 @@ Monitored Source / Peering Link
 ## 3. Supported Threat Models
 
 | Threat Category | Key Behavioral Indicators | Detection Mechanism |
-|---|---|---|
+| :--- | :--- | :--- |
 | **Volumetric SYN Flood** | Extreme packet rate, small uniform packet sizes (~60B), high source IP entropy | Rate threshold + entropy + packet size uniformity |
 | **UDP Reflection / Amplification** | Asymmetric inbound/outbound ratio (>10x), high inbound volume from DNS/NTP/SNMP ports | Asymmetry ratio + inbound byte volume |
 | **Botnet C2 Beaconing** | Highly periodic communication, low inter-arrival variance (CV < 0.15), small fixed destinations | Periodicity score + timing regularity + fanout |
@@ -102,17 +103,20 @@ The feature extraction layer computes **30+ behavioral features** per flow:
 ## 6. Running Locally
 
 ### Prerequisites
+
 * Python 3.10+
 * Node.js 18+ and npm
 
 ### Quick Start (Single Command)
 
 **Windows**:
+
 ```bat
 start.bat
 ```
 
 **Linux / macOS**:
+
 ```bash
 chmod +x start.sh && ./start.sh
 ```
@@ -122,30 +126,36 @@ chmod +x start.sh && ./start.sh
 ### Manual Setup
 
 #### 1. Backend
+
 ```bash
 cd backend
 pip install -r requirements.txt
 uvicorn app.main:app --reload --port 8000
 ```
+
 * Backend API: `http://localhost:8000`
 * Interactive API Docs: `http://localhost:8000/docs`
 * WebSocket Endpoint: `ws://localhost:8000/ws/events`
 
 #### 2. Frontend
+
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
+
 * Dashboard UI: `http://localhost:5173`
 
 #### 3. Running Backend Tests
+
 ```bash
 cd backend
 pytest tests/ -v
 ```
 
 #### 4. Building Frontend for Production
+
 ```bash
 cd frontend
 npm run build
@@ -155,7 +165,7 @@ npm run build
 
 ## 7. One-Click Demo Mode
 
-Click **"START DEMO"** on the dashboard to trigger an automated 8-phase demonstration:
+Click **"START AUTOMATED DEMO"** on the dashboard to trigger an automated 8-phase demonstration:
 
 1. **Phase 1 — Normal Traffic**: Establishes behavioral baseline
 2. **Phase 2 — Reconnaissance**: Port scanning and network mapping detection
@@ -172,8 +182,9 @@ Controls available: **Start**, **Pause**, **Resume**, **Stop**.
 
 ## 8. Performance & Technical Transparency
 
-* **Detection Latency**: **Measured in real time** (`time_completed - time_received`) and displayed live in milliseconds/microseconds.
+* **Detection Latency**: **Measured in real time** (`time_completed - time_received`) and displayed live with p50, p95, p99 percentiles.
 * **Bounded Memory**: Bounded client-side buffers (150 alerts, 200 flows, 120 metric points) and LRU backend tables (500 flows) prevent memory leaks.
+* **Process Memory**: Measured working set memory directly from operating system process metrics.
 * **Throttled Rendering & Batching**: High-frequency telemetry streams are batched for WebSocket transport and UI rendering (~5-20fps) to keep the browser responsive.
 * **Technical Honesty**: This system is a **prototype / demonstration build**. Confidence scores are computed from mathematical feature indicators rather than a black-box trained model. No fabricated accuracy/F1 claims are made.
 
@@ -182,6 +193,7 @@ Controls available: **Start**, **Pause**, **Resume**, **Stop**.
 ## 9. Future Extensibility
 
 The modular architecture enables seamless expansion:
+
 1. **PCAP & NetFlow Ingestion**: Replace the synthetic generator with live DPDK, AF_PACKET, or NetFlow/IPFIX collectors.
 2. **Trained ML Models**: The `Detector` abstract base class allows drop-in replacement with Random Forest, XGBoost, or Isolation Forest models without altering API or frontend contracts.
 3. **SIEM / Kafka Transport**: Streaming backend can integrate with Kafka/Redpanda message brokers for high-throughput enterprise pipelines.

@@ -2,17 +2,18 @@
 CyberFlux — One-Click Demo Orchestrator
 
 Runs an 8-phase demo sequence, each phase producing the corresponding
-threat telemetry. Transitions are automatic and visible in real time.
+threat telemetry and dynamically scaling the event rate and traffic volume.
+Transitions are automatic and visible in real time on all dashboard charts.
 
 Phase sequence:
-  1. Normal        →  Baseline traffic
-  2. Reconnaissance →  Port scanning
-  3. SYN Flood     →  DDoS
-  4. DNS Tunneling →  Data exfil via DNS
-  5. C2 Beaconing  →  Botnet command & control
-  6. TLS Malware   →  Suspicious encrypted traffic
-  7. Data Exfil    →  Large outbound transfers
-  8. Normal Return →  Back to baseline
+  1. Normal        →  Baseline traffic (~35 eps)
+  2. Reconnaissance →  Port scanning & fanout (~120 eps)
+  3. SYN Flood     →  DDoS volumetric surge (~320 eps)
+  4. DNS Tunneling →  High-entropy data exfil via DNS (~65 eps)
+  5. C2 Beaconing  →  Botnet periodic heartbeat (~45 eps)
+  6. TLS Malware   →  Suspicious encrypted metadata (~50 eps)
+  7. Data Exfil    →  Large outbound transfer surge (~80 eps, high Mbps)
+  8. Normal Return →  Back to baseline (~35 eps)
 """
 
 from __future__ import annotations
@@ -24,6 +25,7 @@ import time
 from app import config
 from app.models.simulation import DemoPhase, DemoPhaseInfo
 from app.simulation.engine import SimulationEngine
+from app.simulation.scenarios import SCENARIOS
 
 logger = logging.getLogger("cyberflux.demo")
 
@@ -37,43 +39,43 @@ DEMO_SEQUENCE: list[tuple[DemoPhase, str, str, list[str]]] = [
     (
         DemoPhase.RECONNAISSANCE,
         "RECON_SCAN",
-        "Reconnaissance / port scanning detected — high destination fanout",
+        "Reconnaissance / port scanning detected — host & port fanout surge",
         ["RECON_SCAN"],
     ),
     (
         DemoPhase.SYN_FLOOD,
         "SYN_FLOOD",
-        "SYN flood DDoS attack — extreme packet rate, high source entropy",
+        "SYN flood DDoS attack — extreme packet rate surge & high source entropy",
         ["SYN_FLOOD"],
     ),
     (
         DemoPhase.DNS_TUNNELING,
         "DNS_TUNNELING",
-        "DNS tunneling detected — high-entropy long DNS queries",
+        "DNS tunneling detected — high-entropy long DNS queries & directional asymmetry",
         ["DNS_TUNNELING"],
     ),
     (
         DemoPhase.BOTNET_C2,
         "BOTNET_C2",
-        "Botnet C2 beaconing — periodic connections to fixed destinations",
+        "Botnet C2 beaconing — periodic check-in connections to fixed destinations",
         ["BOTNET_C2"],
     ),
     (
         DemoPhase.MALWARE_TLS,
         "MALWARE_TLS",
-        "Suspicious TLS/QUIC traffic — anomalous fingerprints (metadata only)",
+        "Suspicious TLS/QUIC traffic — anomalous JA3/JA4 fingerprints & deprecated ciphers",
         ["MALWARE_TLS"],
     ),
     (
         DemoPhase.DATA_EXFILTRATION,
         "DATA_EXFILTRATION",
-        "Data exfiltration — large outbound transfers detected",
+        "Data exfiltration — large sustained outbound transfers & bandwidth surge",
         ["DATA_EXFILTRATION"],
     ),
     (
         DemoPhase.NORMAL_2,
         "BENIGN",
-        "Return to normal — threats subsided, monitoring continues",
+        "Return to normal — threats subsided, unidirectional monitoring baseline restored",
         [],
     ),
 ]
@@ -126,14 +128,21 @@ class DemoOrchestrator:
         self._task = asyncio.create_task(self._run_phases())
 
     async def _run_phases(self) -> None:
-        """Execute all phases sequentially."""
+        """Execute all phases sequentially with dynamic traffic scaling."""
         try:
             for i, (phase, scenario, description, threats) in enumerate(DEMO_SEQUENCE):
                 if not self._running:
                     break
 
                 self._phase_index = i
-                self._engine.set_scenario(scenario)
+                profile = SCENARIOS.get(scenario, SCENARIOS["BENIGN"])
+
+                # Dynamically configure scenario & rate for visible chart transformation
+                self._engine.configure(
+                    scenario=scenario,
+                    event_rate=profile.target_event_rate,
+                    intensity=1.2 if scenario != "BENIGN" else 1.0,
+                )
 
                 info = DemoPhaseInfo(
                     phase_name=phase.value,
@@ -143,7 +152,10 @@ class DemoOrchestrator:
                     expected_threats=threats,
                 )
                 await self._notify_phase(info)
-                logger.info("Demo phase %d/%d: %s", i + 1, len(DEMO_SEQUENCE), phase.value)
+                logger.info(
+                    "Demo phase %d/%d: %s (target rate: %.0f eps)",
+                    i + 1, len(DEMO_SEQUENCE), phase.value, profile.target_event_rate,
+                )
 
                 # Wait for phase duration, checking for stop
                 phase_start = time.time()
